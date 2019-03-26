@@ -23,6 +23,7 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.content.Intent
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -116,7 +117,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         // Check for a valid passport number
         if (TextUtils.isEmpty(passportStr)) {
-            passport.error = "This field is required"
+            passport.error = getString(R.string.error_field_required)
             focusView = passport
             cancel = true
         } else if (!isPassportValid(passportStr)){
@@ -135,7 +136,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(emailStr)) {
-            email.error = "This field is required"
+            email.error = getString(R.string.error_field_required)
             focusView = email
             cancel = true
         } else if (!isEmailValid(emailStr)) {
@@ -151,9 +152,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
+
+            //showProgress(true)
+            //mAuthTask = UserLoginTask(emailStr, passwordStr)
+            //mAuthTask!!.execute(null as Void?)
+
+            val i= Intent(this, ResponseActivity::class.java)
+            startActivity(i)
         }
     }
 
