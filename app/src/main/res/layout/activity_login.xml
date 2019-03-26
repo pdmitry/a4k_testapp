@@ -36,6 +36,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                <EditText
+                        android:id="@+id/passport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Passport number (required)"
+                        android:imeActionId="6"
+                        android:imeActionLabel="Come on"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textVisiblePassword"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:autofillHints="Numbers only"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <AutoCompleteTextView
                         android:id="@+id/email"
                         android:layout_width="match_parent"

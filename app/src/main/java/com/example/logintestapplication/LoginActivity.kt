@@ -23,7 +23,6 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
-import android.util.Log
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -43,17 +42,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-
                 attemptLogin()
                 return@OnEditorActionListener true
             }
             false
         })
 
-        email_sign_in_button.setOnClickListener {
-            Log.v("tag", "Button click event, login attempt induced")
-            attemptLogin()
-        }
+        email_sign_in_button.setOnClickListener { attemptLogin() }
     }
 
     private fun populateAutoComplete() {
@@ -107,15 +102,29 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         // Reset errors.
+        passport.error = null
         email.error = null
         password.error = null
 
         // Store values at the time of the login attempt.
+        val passportStr = passport.text.toString()
         val emailStr = email.text.toString()
         val passwordStr = password.text.toString()
 
         var cancel = false
         var focusView: View? = null
+
+        // Check for a valid passport number
+        if (TextUtils.isEmpty(passportStr)) {
+            passport.error = "This field is required"
+            focusView = passport
+            cancel = true
+        } else if (!isPassportValid(passportStr)){
+            passport.error = "This passport number is invalid"
+            focusView = passport
+            cancel = true
+        }
+
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
@@ -126,7 +135,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(emailStr)) {
-            email.error = getString(R.string.error_field_required)
+            email.error = "This field is required"
             focusView = email
             cancel = true
         } else if (!isEmailValid(emailStr)) {
@@ -146,6 +155,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             mAuthTask = UserLoginTask(emailStr, passwordStr)
             mAuthTask!!.execute(null as Void?)
         }
+    }
+
+    private fun isPassportValid(passport: String): Boolean {
+        //TODO: Replace this with your own logic
+        return passport.length == 10
     }
 
     private fun isEmailValid(email: String): Boolean {
