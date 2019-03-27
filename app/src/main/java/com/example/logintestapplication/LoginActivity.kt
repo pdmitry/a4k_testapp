@@ -21,11 +21,16 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
 import android.content.Intent
+import android.util.Log
 
 import kotlinx.android.synthetic.main.activity_login.*
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * A login screen that offers login via email/password.
@@ -158,7 +163,16 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             //mAuthTask!!.execute(null as Void?)
 
             val i= Intent(this, ResponseActivity::class.java)
+            i.putExtra()
             startActivity(i)
+
+            val o= createRequest("http://firststring.ru/robots.txt").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+            o.subscribe({
+
+            }, {
+                Log.e("", "connection failed")
+            })
         }
     }
 

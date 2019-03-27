@@ -11,6 +11,8 @@ class ResponseActivity:Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_response)
 
-        response_text.setOnClickListener{}
+        response_text.setOnClickListener{
+            finish()
+        }
     }
 }
